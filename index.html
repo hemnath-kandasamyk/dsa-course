@@ -747,8 +747,7 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbziT5GWQj1nRiLw3dVkrs30sospGqBITYQ-0dlebgBANHXhOmfk9wGlMS2DVA2ERwXl/exec';
 
   try {
-    if (GOOGLE_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbziT5GWQj1nRiLw3dVkrs30sospGqBITYQ-0dlebgBANHXhOmfk9wGlMS2DVA2ERwXl/exec') {
-      await fetch(GOOGLE_SCRIPT_URL, {
+    await fetch(GOOGLE_SCRIPT_URL,{
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
