@@ -987,57 +987,25 @@ function validate(){
 }
 
 /* ── Submit ── */
-document.getElementById('regForm').addEventListener('submit', async function(e) {
-
+document.getElementById('regForm').addEventListener('submit',async function(e){
   e.preventDefault();
+  if(!validate())return;
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Submitting...';
 
-  if (!validate()) return;
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Submitting...';
-
-  const payload = {
-    name: document.getElementById('f-name').value.trim(),
-    email: document.getElementById('f-email').value.trim(),
-    phone: document.getElementById('f-phone').value.trim(),
-    college: document.getElementById('f-college').value.trim(),
-    year: document.getElementById('f-year').value,
-    lang: document.getElementById('f-lang').value,
-    date: new Date().toLocaleString('en-IN')
+  const payload={
+    name:   document.getElementById('f-name').value.trim(),
+    email:  document.getElementById('f-email').value.trim(),
+    phone:  document.getElementById('f-phone').value.trim(),
+    college:document.getElementById('f-college').value.trim(),
+    year:   document.getElementById('f-year').value,
+    lang:   document.getElementById('f-lang').value,
+    date:   new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
   };
 
-  const ENDPOINT = "https://script.google.com/macros/s/AKfycbwhROqSlAY7UmKtF4EwUl81o7ASvh4fye1AYXJuA62y24QFwmk5uzsW_gyoekT0hCFE/exec";
-
-  try {
-
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json();
-
-    console.log("Server response:", data);
-
-    document.getElementById('formWrap').style.display = 'none';
-    document.getElementById('successWrap').classList.add('show');
-
-  } catch (error) {
-
-    console.error("Submission error:", error);
-    alert("Something went wrong. Please try again.");
-
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = "Submit Registration →";
-
-});
-
-
   /* Replace with your Google Apps Script URL */
-  const ENDPOINT='https://script.google.com/macros/s/AKfycbwhROqSlAY7UmKtF4EwUl81o7ASvh4fye1AYXJuA62y24QFwmk5uzsW_gyoekT0hCFE/exec';
+  const ENDPOINT='https://script.google.com/macros/s/AKfycbx1234abcd5678/exec';
 
   try{
     await fetch(ENDPOINT,{
