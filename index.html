@@ -653,7 +653,7 @@ select.inp option{background:var(--bg2)}
 
   <div class="hero-eyebrow">
     <div class="eyebrow-line"></div>
-    <div class="eyebrow-text">Enrollment Open · 2025</div>
+    <div class="eyebrow-text">Enrollment Open · 2026</div>
     <div class="eyebrow-badge">100% Free</div>
     <div class="eyebrow-line"></div>
   </div>
@@ -781,15 +781,15 @@ select.inp option{background:var(--bg2)}
     <div class="instructor-wrap">
       <div class="instructor-card reveal">
         <div class="big-avatar">H</div>
-        <div class="instructor-name">Mr. Hemnath KK</div>
+        <div class="instructor-name">Mr. HEMNATH KK</div>
         <div class="instructor-role">Lead Instructor · DSA Expert</div>
         <div class="instructor-bio">Passionate software engineer and educator dedicated to making Data Structures & Algorithms accessible to every aspiring developer — completely free of charge.</div>
         <div class="skill-tags">
           <span class="tag hi">DSA</span>
-          <span class="tag hi">Algorithms</span>
+          <span class="tag hi">Machine Learning</span>
           <span class="tag">Python</span>
           <span class="tag">Java</span>
-          <span class="tag">C++</span>
+          <span class="tag">Web Developement</span>
           <span class="tag">Problem Solving</span>
         </div>
       </div>
@@ -808,7 +808,7 @@ select.inp option{background:var(--bg2)}
           </li>
           <li>
             <div class="check">✓</div>
-            <span>30+ handpicked coding problems with full solution walkthroughs.</span>
+            <span>100+ handpicked coding problems with full solution walkthroughs.</span>
           </li>
           <li>
             <div class="check">✓</div>
@@ -947,91 +947,115 @@ select.inp option{background:var(--bg2)}
 
 
 <script>
-/* ── Modal ── */
-function openModal(){
+/* ── Modal Control ── */
+function openModal() {
   document.getElementById('overlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
-function closeModal(){
+
+function closeModal() {
   document.getElementById('overlay').classList.remove('open');
-  document.body.style.overflow='';
-  setTimeout(()=>{
+  document.body.style.overflow = '';
+  setTimeout(() => {
     document.getElementById('successWrap').classList.remove('show');
-    document.getElementById('formWrap').style.display='';
+    document.getElementById('formWrap').style.display = 'block';
     document.getElementById('regForm').reset();
     clearErrors();
-  },300);
+  }, 300);
 }
-function overlayBg(e){if(e.target===document.getElementById('overlay'))closeModal();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function overlayBg(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
 
 /* ── Validation ── */
-function clearErrors(){
-  document.querySelectorAll('.error-msg').forEach(el=>el.classList.remove('show'));
-  document.querySelectorAll('.inp').forEach(el=>el.classList.remove('err'));
+function clearErrors() {
+  document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.inp').forEach(el => el.classList.remove('err'));
 }
-function showErr(inputId,msgId){
-  document.getElementById(inputId).classList.add('err');
-  document.getElementById(msgId).classList.add('show');
+
+function showErr(inputId, msgId) {
+  const input = document.getElementById(inputId);
+  const msg = document.getElementById(msgId);
+  if (input) input.classList.add('err');
+  if (msg) msg.classList.add('show');
 }
-function validate(){
+
+function validate() {
   clearErrors();
-  let ok=true;
-  const name=document.getElementById('f-name').value.trim();
-  const email=document.getElementById('f-email').value.trim();
-  const phone=document.getElementById('f-phone').value.trim();
-  if(!name){showErr('f-name','e-name');ok=false;}
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('f-email','e-email');ok=false;}
-  if(!phone||!/^[\d\s\+\-\(\)]{7,16}$/.test(phone)){showErr('f-phone','e-phone');ok=false;}
+  let ok = true;
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+
+  if (!name) { showErr('f-name', 'e-name'); ok = false; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('f-email', 'e-email'); ok = false; }
+  if (!phone || phone.length < 10) { showErr('f-phone', 'e-phone'); ok = false; }
+
   return ok;
 }
 
-/* ── Submit ── */
-document.getElementById('regForm').addEventListener('submit',async function(e){
+/* ── Submit Logic ── */
+document.getElementById('regForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  if(!validate())return;
-  const btn=document.getElementById('submitBtn');
-  btn.disabled=true;
-  btn.innerHTML='<span class="spinner"></span> Submitting...';
+  if (!validate()) return;
 
-  const payload={
-    name:   document.getElementById('f-name').value.trim(),
-    email:  document.getElementById('f-email').value.trim(),
-    phone:  document.getElementById('f-phone').value.trim(),
-    college:document.getElementById('f-college').value.trim(),
-    year:   document.getElementById('f-year').value,
-    lang:   document.getElementById('f-lang').value,
-    date:   new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
+  const btn = document.getElementById('submitBtn');
+
+  // ✅ Updated Google Apps Script endpoint
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzPG4S1m8_tUxcvbiC1E3b71ADqCW0KeyN_c2Kuxl339C2AiJ-LNOeiIpits8UDy7LI/exec';
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Processing...';
+
+  const payload = {
+    name: document.getElementById('f-name').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
+    phone: document.getElementById('f-phone').value.trim(),
+    college: document.getElementById('f-college').value.trim(),
+    year: document.getElementById('f-year').value,
+    lang: document.getElementById('f-lang').value,
+    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
 
-  /* Replace with your Google Apps Script URL */
-  const ENDPOINT='https://script.google.com/macros/s/AKfycbx1234abcd5678/exec';
-
-  try{
-    await fetch(ENDPOINT,{
-      method:'POST',mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
+  try {
+    // Google Apps Script requires mode: 'no-cors' to avoid preflight errors
+    await fetch(ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
     });
-  }catch(_){}
 
-  btn.disabled=false;
-  btn.innerHTML='Submit Registration →';
-  document.getElementById('formWrap').style.display='none';
-  document.getElementById('successWrap').classList.add('show');
+    // no-cors doesn't return a readable response — assume success if no throw
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('successWrap').classList.add('show');
+
+  } catch (error) {
+    console.error("Submission error:", error);
+    alert("Something went wrong. Please check your connection and try again.");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Submit Registration →';
+  }
 });
 
-/* ── Scroll reveal ── */
-const revealEls=document.querySelectorAll('.reveal');
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
+/* ── Scroll Reveal ── */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
       entry.target.classList.add('visible');
       io.unobserve(entry.target);
     }
   });
-},{threshold:.1,rootMargin:'0px 0px -60px 0px'});
-revealEls.forEach(el=>io.observe(el));
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+revealEls.forEach(el => io.observe(el));
 </script>
 </body>
 </html>
